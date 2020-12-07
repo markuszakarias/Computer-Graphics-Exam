@@ -36,7 +36,7 @@ void Terrain::loadTerrainFromMap(const std::string filename) {
 	}
 	else {
 
-		std::cout << "Error loading map" << std::endl;
+		std::cout << "Error loading height map" << std::endl;
 	}
 
 	stbi_image_free(map);
@@ -115,6 +115,24 @@ void Terrain::loadTerrainFromMap(const std::string filename) {
 	
 	terrainIBO = std::make_shared<IndexBuffer>(indices.data(), indices.size());
 
-	terrainMaterial = std::make_unique<Material>();
+	terrainMat = std::make_unique<Material>();
+	terrainMat->getTexture("assets/textures/grass.jpg");
+	terrainMat->loadTexture();
 
+}
+
+void Terrain::draw(glm::mat4 model, glm::vec3 position, GLuint uniformModel) {
+
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(position));
+	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+	terrainMat->useTexture();
+	terrainRenderer->drawElements(terrainVAO, terrainIBO);
+
+	/*
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(10.0f, 0.5f, 25.0f));
+	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+	importModel->renderElements();
+	*/
 }

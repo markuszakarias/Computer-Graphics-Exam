@@ -9,7 +9,7 @@ Scene::Scene()
 	time(0), now(0), model(1.0f), lowerLight(0), uniformModel(0),
 	uniformProjection(0), uniformView(0) {
 
-	start_pos = glm::vec3(1.0f, 10.0f, 1.0f);
+	start_pos = glm::vec3(0.0f, 10.0f, 0.0f);
 	terrain_pos = glm::vec3(0.0f, 0.0f, 0.0f);
 	model_pos = glm::vec3(10.0f, 0.5f, 35.0f);
 }
@@ -69,7 +69,7 @@ void Scene::generateScene(std::shared_ptr<Window>& mainWindow) {
 	skybox = std::make_shared<Skybox>(skyboxFaces);
 
 	terrain = std::make_unique<Terrain>();
-	camera = std::make_shared<Camera>(start_pos, glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f, 4.0f, 0.07f);
+	camera = std::make_shared<Camera>(start_pos, glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f, 100.0f, 0.07f);
 	projection = glm::perspective(glm::radians(45.0f), ((GLfloat)mainWindow->getBufferWidth() / mainWindow->getBufferHeight()), 0.1f, 1200.0f);
 }
 
@@ -108,10 +108,7 @@ void Scene::updateTime() {
 *	Function handles all event updating.
 *
 *   @param mainWindow - Current open window.
-*   @see   useShader(), updateMVP(), updateTime(), keyControls(), mouseControl(), updateLights(),
-*		   retrieveKeys(), toggleFlashLight(), clear(), enableDepth(), draw(), checkCameraCollision(),
-*		   closeWindow(), getViewLocation(), getProjectionLocation(), calculateViewMatrix(),
-*		   setDirectionalLight(), setSpotLights(), allPelletsEaten(), closeWindow(), updateMinimap().
+*   @see 
 */
 void Scene::updateScene(std::shared_ptr<Window>& mainWindow) {
 
@@ -134,5 +131,5 @@ void Scene::updateScene(std::shared_ptr<Window>& mainWindow) {
 
 	terrain->draw(model, terrain_pos, uniformModel);
 
-	skybox->drawSkyBox(skyboxViewMatrix, projection, camera);
+	//skybox->drawSkyBox(skyboxViewMatrix, projection, camera);
 }

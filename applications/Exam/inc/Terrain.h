@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "Material.h"
 #include "Renderer.h"
+#include "Model.h"
 
 class Terrain {
 
@@ -22,17 +23,20 @@ private:
 	std::unique_ptr<VertexBufferLayout> terrainVBLayout;
 	std::shared_ptr<IndexBuffer>		terrainIBO;
 
-	std::unique_ptr<Shader> terrainShader;
-	std::unique_ptr<Material> terrainMaterial;
-	std::unique_ptr<Renderer> terrainRenderer;
+	std::unique_ptr<Shader>				terrainShader;
+	std::unique_ptr<Material>			terrainMat;
+	std::unique_ptr<Renderer>			terrainRenderer;
+
+	std::unique_ptr<Model>				importModel;
+
+	GLuint uniformView;
+	GLuint uniformProjection;
 
 
 public:
 	Terrain();
 	~Terrain();
 	void loadTerrainFromMap(const std::string filename);
-	void draw();
+	void draw(glm::mat4 model, glm::vec3 position, GLuint uniformModel);
 	
-
-
 };

@@ -10,7 +10,7 @@ include_directories("${PROJECT_SOURCE_DIR}/external/audio_format")
 file(GLOB EXAM_HEADER_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Exam/inc/*.h")
 file(GLOB EXAM_SOURCE_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Exam/src/*.cpp")
 
-add_executable(exam "${EXAM_HEADER_FILES}" "${EXAM_SOURCE_FILES}" "Exam.cpp")
+add_executable(exam "${EXAM_HEADER_FILES}" "${EXAM_SOURCE_FILES}" "Exam/Exam.cpp")
 
 target_include_directories(exam PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Exam")
 target_compile_options(exam PRIVATE ${COMPILER_WARNINGS_AND_ERRORS} ${COMPILER_SANITIZERS})

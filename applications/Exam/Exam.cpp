@@ -12,11 +12,12 @@ int main() {
 	mainWindow->initialise();
 
 	auto terrainScene = std::make_unique<Scene>();
+	terrainScene->generateScene(mainWindow);
 
 	while (!mainWindow->shouldClose()) {
 
 		glfwPollEvents();
-		//renderloop
+		terrainScene->updateScene(mainWindow);
 		mainWindow->swapBuffer();
 	}
 
