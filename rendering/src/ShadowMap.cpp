@@ -2,14 +2,14 @@
 
 
 
-ShadowMap::ShadowMap()
-{
+ShadowMap::ShadowMap() {
+
 	FBO = 0;
 	shadowMap = 0;
 }
 
-bool ShadowMap::Init(unsigned int width, unsigned int height)
-{
+bool ShadowMap::Init(unsigned int width, unsigned int height) {
+
 	shadowWidth = width; shadowHeight = height;
 
 	glGenFramebuffers(1, &FBO);
@@ -32,8 +32,8 @@ bool ShadowMap::Init(unsigned int width, unsigned int height)
 
 	GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
-	if (Status != GL_FRAMEBUFFER_COMPLETE)
-	{
+	if (Status != GL_FRAMEBUFFER_COMPLETE) {
+
 		printf("Framebuffer error: %s\n", Status);
 		return false;
 	}
@@ -41,26 +41,26 @@ bool ShadowMap::Init(unsigned int width, unsigned int height)
 	return true;
 }
 
-void ShadowMap::Write()
-{
+void ShadowMap::Write() {
+
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
 }
 
-void ShadowMap::Read(GLenum texUnit)
-{
+void ShadowMap::Read(GLenum texUnit) {
+
 	glActiveTexture(texUnit);
 	glBindTexture(GL_TEXTURE_2D, shadowMap);
 }
 
-ShadowMap::~ShadowMap()
-{
-	if (FBO)
-	{
+ShadowMap::~ShadowMap() {
+
+	if (FBO) {
+
 		glDeleteFramebuffers(1, &FBO);
 	}
 
-	if (shadowMap)
-	{
+	if (shadowMap) {
+
 		glDeleteTextures(1, &shadowMap);
 	}
 }

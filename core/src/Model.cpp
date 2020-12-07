@@ -12,8 +12,7 @@
 *	Default constructor for the Model class
 *
 */
-Model::Model()
-{
+Model::Model() {
 
 }
 
@@ -25,13 +24,13 @@ Model::Model()
 *  @see		loadNode(aiNode, aiScene), loadMaterials
 * 
 */
-void Model::loadModel(const std::string& fileName)
-{
+void Model::loadModel(const std::string& fileName) {
+
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(fileName, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
 
-	if (!scene)
-	{
+	if (!scene) {
+
 		std::cout << "Model (" << fileName << ") failed to load: " << importer.GetErrorString() << std::endl;
 		return;
 	}
@@ -51,15 +50,15 @@ void Model::loadModel(const std::string& fileName)
 *	@see	loadMesh(), loadNode()
 * 
 */
-void Model::loadNode(aiNode* node, const aiScene* scene)
-{
-	for (size_t i = 0; i < node->mNumMeshes; i++)
-	{
+void Model::loadNode(aiNode* node, const aiScene* scene) {
+
+	for (size_t i = 0; i < node->mNumMeshes; i++) {
+
 		loadMesh(scene->mMeshes[node->mMeshes[i]], scene);
 	}
 
-	for (size_t i = 0; i < node->mNumChildren; i++)
-	{
+	for (size_t i = 0; i < node->mNumChildren; i++) {
+
 		loadNode(node->mChildren[i], scene);
 	}
 
@@ -75,21 +74,21 @@ void Model::loadNode(aiNode* node, const aiScene* scene)
 *	@see loadTextureA()
 *
 */
-void Model::loadMaterials(const aiScene* scene)
-{
+void Model::loadMaterials(const aiScene* scene) {
+
 	textureList.resize(scene->mNumMaterials);
 
-	for (size_t i = 0; i < scene->mNumMaterials; i++)
-	{
+	for (size_t i = 0; i < scene->mNumMaterials; i++) {
+
 		aiMaterial* material = scene->mMaterials[i];
 
 		textureList[i] = nullptr;
 
-		if (material->GetTextureCount(aiTextureType_DIFFUSE))
-		{
+		if (material->GetTextureCount(aiTextureType_DIFFUSE)) {
+
 			aiString path;
-			if (material->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS)
-			{
+			if (material->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
+
 				unsigned long int idx = std::string(path.data).rfind("\\");
 				std::string filename = std::string(path.data).substr(idx + 1);
 
@@ -98,16 +97,16 @@ void Model::loadMaterials(const aiScene* scene)
 				textureList[i] = std::make_unique<Material>();
 				textureList[i]->getTexture(texPath.c_str());
 
-				if (!textureList[i]->loadTextureA())
-				{
+				if (!textureList[i]->loadTexture()) {
+
 					std::cout << "Failed to load texture at: " << texPath << std::endl;
 					textureList[i] = nullptr;
 				}
 			}
 		}
 
-		if (!textureList[i])
-		{
+		if (!textureList[i]) {
+
 			textureList[i] = std::make_unique<Material>();
 			textureList[i]->getTexture("assets/textures/plain.png"); // In case no texture is found
 			textureList[i]->loadTextureA();				// we set a standard texture.
@@ -126,17 +125,17 @@ void Model::loadMaterials(const aiScene* scene)
 *	@see VertexArray(), VertexBuffer(), VertexBufferLayout(), IndexBuffer()
 * 
 */
-void Model::loadMesh(aiMesh* mesh, const aiScene* scene)
-{
+void Model::loadMesh(aiMesh* mesh, const aiScene* scene) {
+
 	std::vector<GLfloat> vertices;
 	std::vector<unsigned int> indices;
 
-	for (size_t i = 0; i < mesh->mNumVertices; i++)
-	{
+	for (size_t i = 0; i < mesh->mNumVertices; i++) {
+
 		vertices.insert(vertices.end(), { mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z });
 		
-		if (mesh->mTextureCoords[0])
-		{
+		if (mesh->mTextureCoords[0]) {
+
 			vertices.insert(vertices.end(), { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y });
 		}
 		else {
@@ -146,11 +145,11 @@ void Model::loadMesh(aiMesh* mesh, const aiScene* scene)
 		vertices.insert(vertices.end(), { -mesh->mNormals[i].x, -mesh->mNormals[i].y, -mesh->mNormals[i].z });
 	}
 
-	for (size_t i = 0; i < mesh->mNumFaces; i++)
-	{
+	for (size_t i = 0; i < mesh->mNumFaces; i++) {
+
 		aiFace face = mesh->mFaces[i];
-		for (size_t j = 0; j < face.mNumIndices; j++)
-		{
+		for (size_t j = 0; j < face.mNumIndices; j++) {
+
 			indices.push_back(face.mIndices[j]);
 		}
 	}
@@ -182,14 +181,13 @@ void Model::loadMesh(aiMesh* mesh, const aiScene* scene)
 *
 *	@see	drawElements()
 */
-void Model::renderElements()
-{
-	for (size_t i = 0; i < rendererList.size(); i++)
-	{
+void Model::renderElements() {
+
+	for (size_t i = 0; i < rendererList.size(); i++) {
 		unsigned int materialIndex = meshToTex[i];
 
-		if (materialIndex < textureList.size() && textureList[materialIndex])
-		{
+		if (materialIndex < textureList.size() && textureList[materialIndex]) {
+
 			textureList[materialIndex]->useTexture();
 		}
 
@@ -203,14 +201,14 @@ void Model::renderElements()
 *
 *	@see	drawInstaned()
 */
-void Model::renderInstanced(int numInstanced)
-{
-	for (size_t i = 0; i < rendererList.size(); i++)
-	{
+void Model::renderInstanced(int numInstanced) {
+
+	for (size_t i = 0; i < rendererList.size(); i++) {
+
 		unsigned int materialIndex = meshToTex[i];
 
-		if (materialIndex < textureList.size() && textureList[materialIndex])
-		{
+		if (materialIndex < textureList.size() && textureList[materialIndex]) {
+
 			textureList[materialIndex]->useTexture();
 		}
 
@@ -222,7 +220,6 @@ void Model::renderInstanced(int numInstanced)
 *	Destructor for the model object
 *
 */
-Model::~Model()
-{
+Model::~Model() {
 	
 }

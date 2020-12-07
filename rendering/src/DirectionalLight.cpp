@@ -16,8 +16,8 @@
 *  DirectionalLight default constructor. Derives from the Light class. 
 *
 */
-DirectionalLight::DirectionalLight() : Light()
-{
+DirectionalLight::DirectionalLight() : Light() {
+
 	direction = glm::vec3(0.0f, -1.0f, 0.0f);
 }
 
@@ -41,8 +41,8 @@ DirectionalLight::DirectionalLight() : Light()
 DirectionalLight::DirectionalLight(GLfloat red, GLfloat green, GLfloat blue,
 	GLfloat aIntensity, GLfloat dIntensity,
 	GLfloat xDir, GLfloat yDir, GLfloat zDir)
-	: Light(red, green, blue, aIntensity, dIntensity)
-{
+	: Light(red, green, blue, aIntensity, dIntensity) {
+
 	direction = glm::vec3(xDir, yDir, zDir);
 }
 
@@ -69,8 +69,8 @@ DirectionalLight::DirectionalLight(GLuint shadowWidth, GLuint shadowHeight,
 	GLfloat red, GLfloat green, GLfloat blue,
 	GLfloat aIntensity, GLfloat dIntensity,
 	GLfloat xDir, GLfloat yDir, GLfloat zDir)
-	: Light(2048, 2048, red, green, blue, aIntensity, dIntensity)
-{
+	: Light(2048, 2048, red, green, blue, aIntensity, dIntensity) {
+
 	direction = glm::vec3(xDir, yDir, zDir);
 
 	lightProj = glm::ortho(-60.0f, 60.0f, -60.0f, 60.0f, 0.1f, 500.0f);
@@ -87,8 +87,8 @@ DirectionalLight::DirectionalLight(GLuint shadowWidth, GLuint shadowHeight,
 *
 */
 void DirectionalLight::useLight(GLfloat ambientIntensityLocation, GLfloat ambientColourLocation,
-	GLfloat diffuseIntensityLocation, GLfloat directionLocation)
-{
+	GLfloat diffuseIntensityLocation, GLfloat directionLocation) {
+
 	glUniform3f(ambientColourLocation, colour.x, colour.y, colour.z);
 	glUniform1f(ambientIntensityLocation, ambientIntensity);
 
@@ -101,15 +101,14 @@ void DirectionalLight::useLight(GLfloat ambientIntensityLocation, GLfloat ambien
 *	PLACEHOLDER
 *
 */
-glm::mat4 DirectionalLight::CalculateLightTransform()
-{
+glm::mat4 DirectionalLight::CalculateLightTransform() {
+
 	return lightProj * glm::lookAt(-direction, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 /**
 *  Destructor of the DirectionalLight.
 */
-DirectionalLight::~DirectionalLight()
-{
+DirectionalLight::~DirectionalLight() {
 
 }

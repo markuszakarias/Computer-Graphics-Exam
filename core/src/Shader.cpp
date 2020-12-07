@@ -13,8 +13,8 @@
 *	Default constructor for the Shader. Initializes the uniforms and other variables. 
 *
 */
-Shader::Shader() 
-{
+Shader::Shader() {
+
 	shaderID = 0;
 	uniformModel = 0;
 	uniformProjection = 0;
@@ -31,8 +31,8 @@ Shader::Shader()
 * 
 *	@see readFile(), compileShader()
 */
-void Shader::createShaderFromFile(const char* vertexLocation, const char* fragmentLocation) 
-{
+void Shader::createShaderFromFile(const char* vertexLocation, const char* fragmentLocation) {
+
 	std::string vertexString = readFile(vertexLocation);
 	std::string fragmentString = readFile(fragmentLocation);
 
@@ -79,8 +79,8 @@ std::string Shader::readFile(const char* fileLocation) {
 *   @param vertexCode	-	Compiles the vertex code from the shader
 *   @param fragmentCode -	Compiles the fragment code from the shader
 */
-void Shader::compileShader(const char* vertexCode, const char* fragmentCode)
-{
+void Shader::compileShader(const char* vertexCode, const char* fragmentCode) {
+
 	shaderID = glCreateProgram();
 
 	if (!shaderID) {
@@ -98,8 +98,8 @@ void Shader::compileShader(const char* vertexCode, const char* fragmentCode)
 
 	glLinkProgram(shaderID);
 	glGetProgramiv(shaderID, GL_LINK_STATUS, &result);
-	if (!result) 
-	{
+	if (!result) {
+
 		glGetProgramInfoLog(shaderID, sizeof(eLog), NULL, eLog);
 		std::cout << "Error LINKING program: " << eLog;
 		return;
@@ -107,8 +107,8 @@ void Shader::compileShader(const char* vertexCode, const char* fragmentCode)
 
 	glValidateProgram(shaderID);
 	glGetProgramiv(shaderID, GL_VALIDATE_STATUS, &result);
-	if (!result) 
-	{
+	if (!result) {
+
 		glGetProgramInfoLog(shaderID, sizeof(eLog), NULL, eLog);
 		std::cout << "Error VALIDATING program: " << eLog;
 		return;
@@ -143,8 +143,8 @@ void Shader::compileShader(const char* vertexCode, const char* fragmentCode)
 
 	uniformPointLightCount = glGetUniformLocation(shaderID, "pointLightCount");
 
-	for (unsigned int i = 0; i < 15; i++)
-	{
+	for (unsigned int i = 0; i < 15; i++) {
+
 		char localBuffer[100] = { '\0' };
 
 		snprintf(localBuffer, sizeof(localBuffer), "pointLights[%d].base.colour", i);
@@ -171,8 +171,8 @@ void Shader::compileShader(const char* vertexCode, const char* fragmentCode)
 
 	uniformSpotLightCount = glGetUniformLocation(shaderID, "spotLightCount");
 
-	for (unsigned int i = 0; i < 3; i++)
-	{
+	for (unsigned int i = 0; i < 3; i++) {
+
 		char localBuffer[100] = { '\0' };
 
 		snprintf(localBuffer, sizeof(localBuffer), "spotLights[%d].base.base.colour", i);
@@ -209,8 +209,8 @@ void Shader::compileShader(const char* vertexCode, const char* fragmentCode)
 *	PLACEHOLDER
 * 
 */
-void Shader::SetTexture(GLuint textureUnit)
-{
+void Shader::SetTexture(GLuint textureUnit) {
+
 	glUniform1i(uniformTex, textureUnit);
 }
 
@@ -219,8 +219,8 @@ void Shader::SetTexture(GLuint textureUnit)
 *	PLACEHOLDER
 *
 */
-void Shader::SetDirectionalShadowMap(GLuint textureUnit)
-{
+void Shader::SetDirectionalShadowMap(GLuint textureUnit) {
+
 	glUniform1i(uniformDirectionalShadowMap, textureUnit);
 }
 
@@ -229,8 +229,8 @@ void Shader::SetDirectionalShadowMap(GLuint textureUnit)
 *	PLACEHOLDER
 *
 */
-void Shader::SetDirectionalLightTransform(glm::mat4* lTransform)
-{
+void Shader::SetDirectionalLightTransform(glm::mat4* lTransform) {
+
 	glUniformMatrix4fv(uniformDirectionalLightTransform, 1, GL_FALSE, glm::value_ptr(*lTransform));
 }
 
@@ -244,8 +244,7 @@ void Shader::SetDirectionalLightTransform(glm::mat4* lTransform)
 * 
 *	@see useLight()
 */
-void Shader::setDirectionalLight(std::shared_ptr<DirectionalLight>& dLight)
-{
+void Shader::setDirectionalLight(std::shared_ptr<DirectionalLight>& dLight) {
 
 	dLight->useLight(uniformDirectionalLight.uniformAmbientIntensity, uniformDirectionalLight.uniformColour,
 		uniformDirectionalLight.uniformDiffuseIntensity, uniformDirectionalLight.uniformDirection);
@@ -261,14 +260,14 @@ void Shader::setDirectionalLight(std::shared_ptr<DirectionalLight>& dLight)
 * 
 *	@see useLight()
 */
-void Shader::setPointLights(PointLight* pLight, unsigned int lightCount)
-{
+void Shader::setPointLights(PointLight* pLight, unsigned int lightCount) {
+
 	if (lightCount > 15) lightCount = 15;
 
 	glUniform1i(uniformPointLightCount, lightCount);
 
-	for (size_t i = 0; i < lightCount; i++)
-	{
+	for (size_t i = 0; i < lightCount; i++) {
+
 		pLight[i].useLight(uniformPointLight[i].uniformAmbientIntensity, uniformPointLight[i].uniformColour,
 			uniformPointLight[i].uniformDiffuseIntensity, uniformPointLight[i].uniformPosition,
 			uniformPointLight[i].uniformConstant, uniformPointLight[i].uniformLinear, uniformPointLight[i].uniformExponent);
@@ -285,14 +284,14 @@ void Shader::setPointLights(PointLight* pLight, unsigned int lightCount)
 * 
 *	@see useLight()
 */
-void Shader::setSpotLights(SpotLight* sLight, unsigned int lightCount)
-{
+void Shader::setSpotLights(SpotLight* sLight, unsigned int lightCount) {
+
 	if (lightCount > 3) lightCount = 3;
 
 	glUniform1i(uniformSpotLightCount, lightCount);
 
-	for (size_t i = 0; i < lightCount; i++)
-	{
+	for (size_t i = 0; i < lightCount; i++) {
+
 		sLight[i].useLight(uniformSpotLight[i].uniformAmbientIntensity, uniformSpotLight[i].uniformColour,
 			uniformSpotLight[i].uniformDiffuseIntensity, uniformSpotLight[i].uniformPosition, uniformSpotLight[i].uniformDirection,
 			uniformSpotLight[i].uniformConstant, uniformSpotLight[i].uniformLinear, uniformSpotLight[i].uniformExponent,
@@ -304,13 +303,13 @@ void Shader::setSpotLights(SpotLight* sLight, unsigned int lightCount)
 *	Uses the shader during runtime.
 *
 */
-void Shader::useShader() 
-{
+void Shader::useShader() {
+
 	glUseProgram(shaderID);
 }
 
-void Shader::unUseShader()
-{
+void Shader::unUseShader() {
+
 	glUseProgram(0);
 }
 
@@ -318,8 +317,8 @@ void Shader::unUseShader()
 *	Clears the shader.
 *
 */
-void Shader::clearShader() 
-{
+void Shader::clearShader() {
+
 	if (shaderID != 0) {
 		glDeleteProgram(shaderID);
 		shaderID = 0;
@@ -335,8 +334,8 @@ void Shader::clearShader()
 *   @param shaderCode	-	The shader code from the file.
 *   @param shaderType	-	A GLenum of the shader type.
 */
-void Shader::addShader(GLuint theProgram, const char* shaderCode, GLenum shaderType) 
-{
+void Shader::addShader(GLuint theProgram, const char* shaderCode, GLenum shaderType) {
+
 	GLuint theShader = glCreateShader(shaderType);
 
 	const GLchar* theCode[1];
@@ -366,8 +365,8 @@ void Shader::addShader(GLuint theProgram, const char* shaderCode, GLenum shaderT
 *
 *	@see clearShader()
 */
-Shader::~Shader() 
-{
+Shader::~Shader() {
+
 	clearShader();
 }
 
@@ -386,12 +385,12 @@ Shader::~Shader()
 *   @param normalOffset	-	The offset to get to the normals of the mesh.
 */
 void Shader::calculateAverageNormals(std::vector<GLuint> indices, unsigned int indiceCount, std::vector<GLfloat> vertices, unsigned int verticeCount,
-	unsigned int vLength, unsigned int normalOffset)
-{
+	unsigned int vLength, unsigned int normalOffset) {
+
 	//We want to go through every triangle we have in the mesh and increment 3 at a time.
 	//This is to jump to each triangle since 3 indices make up a triangle.
-	for (size_t i = 0; i < indiceCount; i += 3)
-	{
+	for (size_t i = 0; i < indiceCount; i += 3) {
+
 		//We need to multiply each indices element by vLength, It moves you down the "table" by 8.
 		unsigned long int in0 = double(indices[i]) * vLength;
 		unsigned long int in1 = double(indices[i + 1]) * vLength;
@@ -434,8 +433,8 @@ void Shader::calculateAverageNormals(std::vector<GLuint> indices, unsigned int i
 	//offset for each individual one. Every time we go through its counting up each of these 0, 1, 2 etc. 
 	//and grabbing relevant one from the list of vertex and going to the offset section of it. Then we 
 	//normalize this vector. Then we assign them to each vertex axis (x, y, z).
-	for (size_t i = 0; i < verticeCount / vLength; i++)
-	{
+	for (size_t i = 0; i < verticeCount / vLength; i++) {
+
 		unsigned long int nOffset = i * vLength + normalOffset;
 
 		glm::vec3 vec(vertices[nOffset], vertices[nOffset + 1], vertices[nOffset + 2]);

@@ -15,8 +15,8 @@
 *
 *   @param va - The VertexArray gets passed and bound
 */
-void Renderer::drawArrays(std::shared_ptr<VertexArray>& va)
-{
+void Renderer::drawArrays(std::shared_ptr<VertexArray>& va) {
+
 	va->bind();
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
@@ -27,8 +27,8 @@ void Renderer::drawArrays(std::shared_ptr<VertexArray>& va)
 *   @param va - The VertexArray gets passed and bound
 *   @param ib - The IndexBuffer gets passed and bound
 */
-void Renderer::drawElements(std::shared_ptr<VertexArray>& va, std::shared_ptr<IndexBuffer>& ib)
-{
+void Renderer::drawElements(std::shared_ptr<VertexArray>& va, std::shared_ptr<IndexBuffer>& ib) {
+
 	va->bind();
 	ib->bind();
 	glDrawElements(GL_TRIANGLES, ib->getCount(), GL_UNSIGNED_INT, nullptr);
@@ -40,8 +40,8 @@ void Renderer::drawElements(std::shared_ptr<VertexArray>& va, std::shared_ptr<In
 *   @param va - The VertexArray gets passed and bound
 *   @param ib - The IndexBuffer gets passed and bound
 */
-void Renderer::drawInstanced(std::shared_ptr<VertexArray>& va, std::shared_ptr<IndexBuffer>& ib, int numInstanced)
-{
+void Renderer::drawInstanced(std::shared_ptr<VertexArray>& va, std::shared_ptr<IndexBuffer>& ib, int numInstanced) {
+
 	va->bind();
 	ib->bind();
 	glDrawElementsInstanced(GL_TRIANGLES, ib->getCount(), GL_UNSIGNED_INT, nullptr, numInstanced);
@@ -51,8 +51,8 @@ void Renderer::drawInstanced(std::shared_ptr<VertexArray>& va, std::shared_ptr<I
 *   Enable GL DEPTH TEST
 *
 */
-void Renderer::enableDepth()
-{
+void Renderer::enableDepth() {
+
 	glEnable(GL_DEPTH_TEST);
 }
 
@@ -60,8 +60,8 @@ void Renderer::enableDepth()
 *   Disable GL DEPTH TEST
 *
 */
-void Renderer::disableDepth()
-{
+void Renderer::disableDepth() {
+
 	glDisable(GL_DEPTH_TEST);
 }
 
@@ -69,8 +69,8 @@ void Renderer::disableDepth()
 *   Clear Dbuffer bit
 *
 */
-void Renderer::clearBuffer()
-{
+void Renderer::clearBuffer() {
+
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
@@ -82,8 +82,8 @@ void Renderer::clearBuffer()
 *   @param f2 - BLUE
 *   @param f3 - Alpha transparency.
 */
-void Renderer::clear(float f0, float f1, float f2, float f3) const
-{
+void Renderer::clear(float f0, float f1, float f2, float f3) const {
+
 	glClearColor(f0, f1, f2, f3);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

@@ -22,8 +22,8 @@
 * 
 */
 IndexBuffer::IndexBuffer(void* data, unsigned int count)
-	: m_count(count)
-{
+	: m_count(count) {
+
 	glGenBuffers(1, &renderer_ID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderer_ID);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_STATIC_DRAW);
@@ -35,8 +35,8 @@ IndexBuffer::IndexBuffer(void* data, unsigned int count)
 *	@see deleteBuffer()
 *
 */
-IndexBuffer::~IndexBuffer()
-{
+IndexBuffer::~IndexBuffer() {
+
 	deleteBuffer();
 }
 
@@ -44,8 +44,8 @@ IndexBuffer::~IndexBuffer()
 *	Binds the buffer.
 *
 */
-void IndexBuffer::bind()
-{
+void IndexBuffer::bind() {
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderer_ID);
 }
 
@@ -53,8 +53,8 @@ void IndexBuffer::bind()
 *	Unbinds the buffer.
 *
 */
-void IndexBuffer::unbind()
-{
+void IndexBuffer::unbind() {
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
@@ -66,8 +66,8 @@ void IndexBuffer::unbind()
 *
 *	@see bind()
 */
-void IndexBuffer::selectIndices(unsigned int* data, unsigned int count)
-{
+void IndexBuffer::selectIndices(unsigned int* data, unsigned int count) {
+
 	bind();
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_STATIC_DRAW);
 }
@@ -76,7 +76,7 @@ void IndexBuffer::selectIndices(unsigned int* data, unsigned int count)
 *	Deletes the buffer.
 *
 */
-void IndexBuffer::deleteBuffer()
-{
+void IndexBuffer::deleteBuffer() {
+
 	glDeleteBuffers(1, &renderer_ID);
 }

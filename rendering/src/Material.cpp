@@ -11,8 +11,8 @@
 *	Material class default constructor. Initialize values to zero.
 *
 */
-Material::Material()
-{
+Material::Material() {
+
 	specularIntensity = 0.0f;
 	shininess = 0.0f;
 }
@@ -24,14 +24,14 @@ Material::Material()
 *   @param	shine	   - The shine effect on the surface
 */
 
-void Material::getSpecular(GLfloat sIntensity, GLfloat shine)
-{
+void Material::getSpecular(GLfloat sIntensity, GLfloat shine) {
+
 	specularIntensity = sIntensity;
 	shininess = shine;
 }
 
-void Material::getTexture(const char* fileLoc)
-{
+void Material::getTexture(const char* fileLoc) {
+
 	textureID = 0;
 	width = 0;
 	height = 0;
@@ -40,12 +40,12 @@ void Material::getTexture(const char* fileLoc)
 
 }
 
-bool Material::loadTexture()
-{
+bool Material::loadTexture() {
+
 	stbi_set_flip_vertically_on_load(1); // Comment this to not flip texture - will be beneficial most of the time
 	unsigned char* texData = stbi_load(fileLocation, &width, &height, &bitDepth, 0);
-	if (!texData)
-	{
+	if (!texData) {
+
 		std::cout << "Failed to find texture at location: " << fileLocation << std::endl;
 		return false;
 	}
@@ -68,12 +68,12 @@ bool Material::loadTexture()
 	return true;
 }
 
-bool Material::loadTextureA()
-{
+bool Material::loadTextureA() {
+
 	//stbi_set_flip_vertically_on_load(1); // Comment this to not flip texture - will be beneficial most of the time
 	unsigned char* texData = stbi_load(fileLocation, &width, &height, &bitDepth, 0);
-	if (!texData)
-	{
+	if (!texData) {
+
 		std::cout << "Failed to find texture at location: " << fileLocation << std::endl;
 		return false;
 	}
@@ -96,14 +96,14 @@ bool Material::loadTextureA()
 	return true;
 }
 
-void Material::useTexture()
-{
+void Material::useTexture() {
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 }
 
-void Material::clearTexture()
-{
+void Material::clearTexture() {
+
 	glDeleteTextures(1, &textureID);
 	textureID = 0;
 	width = 0;
@@ -118,8 +118,8 @@ void Material::clearTexture()
 *   @param	specularIntensityLocation	- Bind the specular intensity to the shader
 *   @param	shininessLocation			- Bind the shininess to the shader
 */
-void Material::useMaterial(GLuint specularIntensityLocation, GLuint shininessLocation)
-{
+void Material::useMaterial(GLuint specularIntensityLocation, GLuint shininessLocation) {
+
 	glUniform1f(specularIntensityLocation, specularIntensity);
 	glUniform1f(shininessLocation, shininess);
 }
@@ -128,7 +128,7 @@ void Material::useMaterial(GLuint specularIntensityLocation, GLuint shininessLoc
 *	Material destructor
 *
 */
-Material::~Material()
-{
+Material::~Material() {
+
 	clearTexture();
 }

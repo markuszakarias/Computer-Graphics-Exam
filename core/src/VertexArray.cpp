@@ -13,8 +13,8 @@
 *
 *   @see bind()
 */
-VertexArray::VertexArray()
-{
+VertexArray::VertexArray() {
+
 	glGenVertexArrays(1, &rendererID); //Generating a vertex array for the array object
 	bind();
 }
@@ -23,8 +23,8 @@ VertexArray::VertexArray()
 *	Destructor for a VertexArray.
 *
 */
-VertexArray::~VertexArray()
-{
+VertexArray::~VertexArray() {
+
 	glDeleteVertexArrays(1, &rendererID);
 }
 
@@ -37,14 +37,14 @@ VertexArray::~VertexArray()
 * 
 *	@see bind()
 */
-void VertexArray::addBuffer(VertexBuffer& vb, VertexBufferLayout& layout)
-{
+void VertexArray::addBuffer(VertexBuffer& vb, VertexBufferLayout& layout) {
+
 	bind();
 	vb.bind();
 	const auto& elements = layout.getElements();
 	unsigned int offset = 0;
-	for (unsigned int i = 0; i < elements.size(); i++)
-	{
+	for (unsigned int i = 0; i < elements.size(); i++) {
+
 		const auto& element = elements[i];
 		glEnableVertexAttribArray(i);
 		glVertexAttribPointer(i, element.count, element.type, element.normalized,
@@ -58,8 +58,8 @@ void VertexArray::addBuffer(VertexBuffer& vb, VertexBufferLayout& layout)
 *	running from here to clean up code. 
 *
 */
-void VertexArray::addBufferDivisor()
-{
+void VertexArray::addBufferDivisor() {
+
 	glEnableVertexAttribArray(3);
 	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
 	glVertexAttribDivisor(3, 1);
@@ -81,8 +81,8 @@ void VertexArray::addBufferDivisor()
 *	Binds the VertexArray
 *
 */
-void VertexArray::bind()
-{
+void VertexArray::bind() {
+
 	glBindVertexArray(rendererID);
 }
 
@@ -90,8 +90,8 @@ void VertexArray::bind()
 *	Unbinds the VertexArray
 *
 */
-void VertexArray::unbind()
-{
+void VertexArray::unbind() {
+
 	glBindVertexArray(0);
 }
 
@@ -102,8 +102,8 @@ void VertexArray::unbind()
 *   @param data	- The data of the updated buffer
 *   @param size	- The size of the updated buffer
 */
-void VertexArray::changeData(std::shared_ptr<VertexBuffer>& VBO, void* data, unsigned int size)
-{
+void VertexArray::changeData(std::shared_ptr<VertexBuffer>& VBO, void* data, unsigned int size) {
+
 	bind();
 	VBO->bind();
 	VBO->updateBuffer(data, size);

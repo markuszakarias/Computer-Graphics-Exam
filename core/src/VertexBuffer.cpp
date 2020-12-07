@@ -16,8 +16,8 @@
 * 
 *	@see bind()
 */
-VertexBuffer::VertexBuffer(const void* data, unsigned int size)
-{
+VertexBuffer::VertexBuffer(const void* data, unsigned int size) {
+
 	glGenBuffers(1, &renderer_ID); //generating a buffer for the vertex buffer object
 	bind();
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
@@ -27,8 +27,8 @@ VertexBuffer::VertexBuffer(const void* data, unsigned int size)
 *	Destructor for a VertexBuffer.
 *
 */
-VertexBuffer::~VertexBuffer()
-{
+VertexBuffer::~VertexBuffer() {
+
 	glDeleteBuffers(1, &renderer_ID);
 }
 
@@ -36,8 +36,8 @@ VertexBuffer::~VertexBuffer()
 *	Binds the VertexBuffer.
 *
 */
-void VertexBuffer::bind() const
-{
+void VertexBuffer::bind() const {
+
 	glBindBuffer(GL_ARRAY_BUFFER, renderer_ID);
 }
 
@@ -45,8 +45,8 @@ void VertexBuffer::bind() const
 *	Unbinds the VertexBuffer.
 *
 */
-void VertexBuffer::unbind() const
-{
+void VertexBuffer::unbind() const {
+
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
@@ -56,8 +56,8 @@ void VertexBuffer::unbind() const
 *	@param data	- The data to get updated
 *	@param size	- The size of the data to get updated
 */
-void VertexBuffer::updateBuffer(const void* data, unsigned int size)
-{
+void VertexBuffer::updateBuffer(const void* data, unsigned int size) {
+
 	bind();
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }

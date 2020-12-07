@@ -17,8 +17,8 @@
 *	Default constructor for the PointLight. Derives from the parent class Light.
 *
 */
-PointLight::PointLight() : Light()
-{
+PointLight::PointLight() : Light() {
+
 	position = glm::vec3(0.0f, 0.0f, 0.0f);
 	constant = 1.0f;
 	linear = 0.0f;
@@ -45,8 +45,8 @@ PointLight::PointLight(GLfloat red, GLfloat green, GLfloat blue,
 	GLfloat aIntensity, GLfloat dIntensity,
 	GLfloat xPos, GLfloat yPos, GLfloat zPos,
 	GLfloat con, GLfloat lin, GLfloat exp)
-	: Light(red, green, blue, aIntensity, dIntensity)
-{
+	: Light(red, green, blue, aIntensity, dIntensity) {
+
 	position = glm::vec3(xPos, yPos, zPos);
 	constant = con;
 	linear = lin;
@@ -67,8 +67,8 @@ PointLight::PointLight(GLfloat red, GLfloat green, GLfloat blue,
 */
 void PointLight::useLight(GLuint ambientIntensityLocation, GLuint ambientColourLocation,
 	GLuint diffuseIntensityLocation, GLuint positionLocation,
-	GLuint constantLocation, GLuint linearLocation, GLuint exponentLocation)
-{
+	GLuint constantLocation, GLuint linearLocation, GLuint exponentLocation) {
+
 	glUniform3f(ambientColourLocation, colour.x, colour.y, colour.z);
 	glUniform1f(ambientIntensityLocation, ambientIntensity);
 	glUniform1f(diffuseIntensityLocation, diffuseIntensity);
@@ -83,7 +83,6 @@ void PointLight::useLight(GLuint ambientIntensityLocation, GLuint ambientColourL
 *  Destructor of the PointLight.
 *
 */
-PointLight::~PointLight()
-{
+PointLight::~PointLight() {
 
 }

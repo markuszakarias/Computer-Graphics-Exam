@@ -27,8 +27,7 @@ void GLAPIENTRY MessageCallback(GLenum source,
 */
 Window::Window() 
 	: bufferWidth(0), bufferHeight(0), initialPos(0),
-	lastPosX(0), lastPosY(0), mainWindow(nullptr)
-{
+	lastPosX(0), lastPosY(0), mainWindow(nullptr) {
 
 	width = 800;
 	height = 600;
@@ -48,13 +47,13 @@ Window::Window()
 *   @param     wWidth  - Width size for window.
 *   @param     wHeight - Height size for window.
 */
-Window::Window(GLint wWidth, GLint wHeight)
-{
+Window::Window(GLint wWidth, GLint wHeight) {
+
     width = wWidth;
     height = wHeight;
 
-    for (size_t i = 0; i < 1024; i++) 
-    {
+    for (size_t i = 0; i < 1024; i++) {
+
         keys[i] = 0;
     }
 
@@ -67,11 +66,11 @@ Window::Window(GLint wWidth, GLint wHeight)
 *
 *   @return int - whether it was successful or not.
 */
-int Window::initialise() 
-{
+int Window::initialise() {
+
     // Initialization of GLFW
-    if (!glfwInit()) 
-    {
+    if (!glfwInit()) {
+
         std::cerr << "GLFW initialization failed." << '\n'; // Using error stream in these cases.
         std::cin.get();
         return EXIT_FAILURE;
@@ -87,8 +86,8 @@ int Window::initialise()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     mainWindow = glfwCreateWindow(width, height, "Autumn Exam 2020", nullptr, nullptr);
-    if (mainWindow == nullptr) 
-    {
+    if (mainWindow == nullptr) {
+
         std::cerr << "GLFW failed on window creation." << '\n';
         std::cin.get();
         glfwTerminate();
@@ -105,8 +104,8 @@ int Window::initialise()
     glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // locking mouse to screen, it will become invisible in effect 
                                                                      // but it's still there, similar to modern games.
     glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK) 
-    {
+    if (glewInit() != GLEW_OK) {
+
         std::cerr << "GLEW failed to start!." << '\n';
         std::cin.get();
         return EXIT_FAILURE;
@@ -134,20 +133,21 @@ int Window::initialise()
 *   This function prints out the frames per second of the window context.
 *   Mostly used for development purposes.
 */
-void Window::updateFPS() 
-{
+void Window::updateFPS() {
+
     static float previousSeconds = glfwGetTime();
     static int frameCount;
     float currentSeconds = glfwGetTime();
     float elapsedSeconds = currentSeconds - previousSeconds;
     
-    if (elapsedSeconds < 0.25f) 
-    {
+    if (elapsedSeconds < 0.25f) {
+
         previousSeconds = currentSeconds;
         float FPS = (float)frameCount / elapsedSeconds; // can not use dynamic or static cast for this.
         std::cout << "FPS IS : " << 1000/(float)FPS << std::endl; // should lie between 1500-2000.
         frameCount = 0;
     }
+
     frameCount++;
 }
 
@@ -160,17 +160,17 @@ void Window::updateFPS()
 *   @param     action - released or pressed
 *   @param     mode   - modifier bit.
 */
-void Window::inputHandler(GLFWwindow* window, int key, int code, int action, int mode) 
-{
+void Window::inputHandler(GLFWwindow* window, int key, int code, int action, int mode) {
+
     Window* myWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
     
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) // robust check for key and action
-    {
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) { // robust check for key and action
+        
         glfwSetWindowShouldClose(window, GL_TRUE); // close on escape!
     }
 
-    if (key != 0 && key < 1024) // extended ascii character size.
-    { 
+    if (key != 0 && key < 1024) { // extended ascii character size.
+
         if (action == GLFW_PRESS) {
             myWindow->keys[key] = true;
         } else if (action == GLFW_RELEASE) {
@@ -183,6 +183,7 @@ void Window::inputHandler(GLFWwindow* window, int key, int code, int action, int
 *   Used for bypassing vector error when calling glfwTerminate().
 */
 void Window::closeWindow() {
+
     glfwSetWindowShouldClose(mainWindow, GL_TRUE);
 }
 
@@ -193,12 +194,12 @@ void Window::closeWindow() {
 *   @param     xPos   - mouse position in x direction
 *   @param     yPos   - mouse position in y direction
 */
-void Window::mouseHandler(GLFWwindow* window, double xPos, double yPos) 
-{
+void Window::mouseHandler(GLFWwindow* window, double xPos, double yPos) {
+
     Window* myWindow = static_cast<Window*>(glfwGetWindowUserPointer(window)); // give access to window
 
-    if (myWindow->initialPos) 
-    {
+    if (myWindow->initialPos) {
+
         myWindow->lastPosX = xPos;
         myWindow->lastPosY = yPos;
         myWindow->initialPos = false;
@@ -214,8 +215,8 @@ void Window::mouseHandler(GLFWwindow* window, double xPos, double yPos)
 /**
 *   Notifies the game engine on PRESS, RELEASE, or continual press.
 */
-void Window::callback() 
-{
+void Window::callback() {
+
     glfwSetKeyCallback(mainWindow, inputHandler); // when a key is pressed handle the input on that window it was pressed to.
     glfwSetCursorPosCallback(mainWindow, mouseHandler);
 }
@@ -225,8 +226,8 @@ void Window::callback()
 *
 *   @see GLfloat - value of the change.
 */
-GLfloat Window::getChangeX() 
-{
+GLfloat Window::getChangeX() {
+
     GLfloat theChange = changeX;
     changeX = 0.0f;
     return theChange;
@@ -237,8 +238,8 @@ GLfloat Window::getChangeX()
 *
 *   @see GLfloat - value of the change.
 */
-GLfloat Window::getChangeY() 
-{
+GLfloat Window::getChangeY() {
+
     GLfloat theChange = changeY;
     changeY = 0.0f;
     return theChange;
@@ -247,8 +248,8 @@ GLfloat Window::getChangeY()
 /**
 *   Destroying the window when the object is destroyed. This is a form of cleanup.
 */
-Window::~Window() 
-{
+Window::~Window() {
+
     glfwDestroyWindow(mainWindow);
     glfwTerminate();
 }

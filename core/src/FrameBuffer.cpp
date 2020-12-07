@@ -14,8 +14,7 @@
 *
 */
 FrameBuffer::FrameBuffer()
-	: frameBuffer(0), texColorBuffer(0), renderObjectBuffer(0)
-{
+	: frameBuffer(0), texColorBuffer(0), renderObjectBuffer(0) {
 
 }
 
@@ -23,8 +22,7 @@ FrameBuffer::FrameBuffer()
 *   Destructor for the frame buffer object.
 *
 */
-FrameBuffer::~FrameBuffer()
-{
+FrameBuffer::~FrameBuffer() {
 
 }
 
@@ -34,8 +32,8 @@ FrameBuffer::~FrameBuffer()
 *	@see bind().
 *
 */
-void FrameBuffer::generateFB()
-{
+void FrameBuffer::generateFB() {
+
 	glGenFramebuffers(1, &frameBuffer);
 	bind();
 }
@@ -49,8 +47,8 @@ void FrameBuffer::generateFB()
 *	@see bindTBO().
 *
 */
-void FrameBuffer::generateTBO(int width, int height)
-{
+void FrameBuffer::generateTBO(int width, int height) {
+
 	glGenTextures(1, &texColorBuffer);
 	bindTBO();
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
@@ -68,8 +66,8 @@ void FrameBuffer::generateTBO(int width, int height)
 *	@see bindRBO().
 *
 */
-void FrameBuffer::generateRBO(int width, int height)
-{
+void FrameBuffer::generateRBO(int width, int height) {
+
 	glGenRenderbuffers(1, &renderObjectBuffer);
 	bindRBO();
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height); // use a single render buffer object for both a depth AND stencil buffer.
@@ -81,8 +79,8 @@ void FrameBuffer::generateRBO(int width, int height)
 *   Binds the frame buffer.
 *
 */
-void FrameBuffer::bind()
-{
+void FrameBuffer::bind() {
+
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 }
 
@@ -90,8 +88,8 @@ void FrameBuffer::bind()
 *   Binds the texture color object.
 *
 */
-void FrameBuffer::bindTBO()
-{
+void FrameBuffer::bindTBO() {
+
 	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
 }
 
@@ -99,8 +97,8 @@ void FrameBuffer::bindTBO()
 *   Binds the render buffer object.
 *
 */
-void FrameBuffer::bindRBO()
-{
+void FrameBuffer::bindRBO() {
+
 	glBindRenderbuffer(GL_RENDERBUFFER, renderObjectBuffer);
 }
 
@@ -108,8 +106,8 @@ void FrameBuffer::bindRBO()
 *   Unbinds the frame buffer.
 *
 */
-void FrameBuffer::unbind()
-{
+void FrameBuffer::unbind() {
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -117,8 +115,8 @@ void FrameBuffer::unbind()
 *   Checks to see if the frame buffer is complete.
 *
 */
-void FrameBuffer::checkStatus()
-{
+void FrameBuffer::checkStatus() {
+
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "Error:  Frame buffer is not completed, missing components!" << std::endl;
 }
