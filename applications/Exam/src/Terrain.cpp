@@ -1,0 +1,120 @@
+#include <stb_image.h>
+#include "Terrain.h"
+
+Terrain::Terrain() {
+
+	// Loading the height map
+	loadTerrainFromMap("assets/mapping/HeightMaps/Randsf_HeightMap.png");
+
+}
+
+Terrain::~Terrain() {
+
+}
+
+void Terrain::loadTerrainFromMap(const std::string filename) {
+
+	/* Source:
+		http://www.lighthouse3d.com/opengl/terrain/index.php?heightmap */
+
+	int numberOfChnls;
+	stbi_uc *map = stbi_load(filename.c_str(), &width, &height, &numberOfChnls, 0);
+
+	heightMap.resize(height, std::vector<int>(width));
+
+	if (map != nullptr) {
+		
+		int num = 0;
+
+		for (int z = 0; z < height; z++) {
+			for (int x = 0; x < width; x++) {
+
+				heightMap[z][x] = static_cast<int>(map[num * numberOfChnls]);
+				num++;
+			}
+		}
+	}
+	else {
+
+		std::cout << "Error loading map" << std::endl;
+	}
+
+	stbi_image_free(map);
+
+
+	for (int z = 0; z < heightMap.size(); z++) {
+		for (int x = 0; x < heightMap[0].size(); x++) {
+
+			GLfloat UV1, UV2;
+
+			if (z % 2 == 0) {
+				if (x % 2 == 0) {
+					UV1 = 0.f;
+					UV2 = 0.f;
+				}
+				else {
+					UV1 = 0.f;
+					UV2 = 1.f;
+				}
+			}
+			else {
+				if (x % 2 == 0) {
+					UV1 = 1.f;
+					UV2 = 0.f;
+				}
+				else {
+					UV1 = 1.f;
+					UV2 = 1.f;
+				}
+			}
+
+
+			GLfloat xCoord = x;
+			GLfloat yCoord = heightMap[z][x];
+			GLfloat zCoord = z;
+
+			std::vector <GLfloat> tempVertex = {
+				xCoord, yCoord, zCoord,
+				UV1, UV2,
+				0.f, -1.f, 0.f 
+			};
+
+			vertices.insert(end(vertices), tempVertex.begin(), tempVertex.end());
+
+		}
+	}
+
+	for (GLuint z = 0; z < height - 1; z++) {
+		for (GLuint x = 0; x < width - 1; x++) {
+			if (x == 5) {
+				x++;
+			}
+
+			std::vector<GLuint> tempIndex = {
+				x + width * z, width * z + x + 1, x + (z + 1) * width,
+				width * z + x + 1, (z + 1) * width + x, (z + 1) * width + x + 1
+			};
+			indices.insert(end(indices), tempIndex.begin(), tempIndex.end());
+		}
+	}
+
+	terrainShader->calculateAverageNormals(indices, indices.size(), vertices, vertices.size(), 8, 5);
+	
+	terrainVAO = std::make_shared<VertexArray>();
+	terrainVAO->bind();
+
+	terrainVBO = std::make_unique<VertexBuffer>(vertices.data(), vertices.size() * sizeof(GLfloat));
+	terrainVBO->bind();
+
+	terrainVBLayout = std::make_unique<VertexBufferLayout>();
+	terrainVBLayout->Push<float>(3);
+	terrainVBLayout->Push<float>(2);
+	terrainVBLayout->Push<float>(3);
+
+	terrainVAO->addBuffer(*terrainVBO, *terrainVBLayout);
+	
+	terrainIBO = std::make_shared<IndexBuffer>(indices.data(), indices.size());
+
+	terrainMaterial = std::make_unique<Material>();
+
+}
