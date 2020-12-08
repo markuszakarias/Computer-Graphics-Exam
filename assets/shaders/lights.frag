@@ -188,9 +188,9 @@ vec3 CalcHeightColour() {
 
 	if (Height <= 20.0) {
 		return terrainColours[0];
-	} else if (Height > 20.0 && Height <= 40.0) {
+	} else if (Height > 20.0 && Height <= 30.0) {
 		return terrainColours[1];
-	} else if (Height > 40.0 && Height <= 120.0) {
+	} else if (Height > 30.0 && Height <= 120.0) {
 		return terrainColours[2];
 	} else if (Height > 120.0) {
 		return terrainColours[3];

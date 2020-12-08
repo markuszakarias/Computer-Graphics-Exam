@@ -11,7 +11,7 @@ Scene::Scene()
 
 	start_pos = glm::vec3(500.0f, 100.0f, 500.0f);
 	terrain_pos = glm::vec3(0.0f, -100.0f, -0.0f);
-	model_pos = glm::vec3(10.0f, 0.5f, 35.0f);
+	model_pos = glm::vec3(500.0f, 100.0f, 500.0f);
 }
 
 /**
@@ -33,6 +33,12 @@ void Scene::generateShaders() {
 
 	shader = std::make_shared<Shader>();
 	shader->createShaderFromFile(vShader, fShader);
+
+	static const char* instanced_vShader = "assets/shaders/instanced.vert";
+	static const char* instanced_fShader = "assets/shaders/lights.frag";
+
+	instanceShader = std::make_shared<Shader>();
+	instanceShader->createShaderFromFile(instanced_vShader, instanced_fShader);
 }
 
 /**
@@ -69,6 +75,10 @@ void Scene::generateScene(std::shared_ptr<Window>& mainWindow) {
 	skybox = std::make_shared<Skybox>(skyboxFaces);
 
 	terrain = std::make_unique<Terrain>();
+
+	import_trees = std::make_unique<ImportModel>(mainWindow);
+	trees = std::make_shared<InstancedModel>(mainWindow);
+
 	camera = std::make_shared<Camera>(start_pos, glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f, 100.0f, 0.07f);
 	projection = glm::perspective(glm::radians(45.0f), ((GLfloat)mainWindow->getBufferWidth() / mainWindow->getBufferHeight()), 0.1f, 2000.0f);
 }
@@ -130,6 +140,9 @@ void Scene::updateScene(std::shared_ptr<Window>& mainWindow) {
 	shader->setDirectionalLight(mapLight);
 
 	terrain->draw(model, terrain_pos, uniformModel);
+	
+	import_trees->drawModel(model, model_pos, uniformModel);
+
 
 	skybox->drawSkyBox(skyboxViewMatrix, projection, camera);
 }

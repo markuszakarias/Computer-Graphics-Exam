@@ -97,7 +97,7 @@ void Terrain::loadTerrainFromMap(const std::string filename) {
 		}
 	}
 
-	//terrainShader->calculateAverageNormals(indices, indices.size(), vertices, vertices.size(), 8, 5);
+	// Normals are calculated in the vertex shader
 	
 	terrainVAO = std::make_shared<VertexArray>();
 	terrainVAO->bind();
@@ -114,16 +114,16 @@ void Terrain::loadTerrainFromMap(const std::string filename) {
 	
 	terrainIBO = std::make_shared<IndexBuffer>(indices.data(), indices.size());
 
-	terrainMat = std::make_unique<Material>();
-	terrainMat->getTexture("assets/textures/mountain.png");
-	terrainMat->loadTexture();
+	// terrainMat = std::make_unique<Material>();
+	// terrainMat->getTexture("assets/textures/mountain.png");
+	// terrainMat->loadTexture();
 
 }
 
 void Terrain::generateShader() {
 
-	static const char* vShader = "assets/shaders/terrain.vert";
-	static const char* fShader = "assets/shaders/terrain.frag";
+	static const char* vShader = "assets/shaders/lights.vert";
+	static const char* fShader = "assets/shaders/lights.frag";
 
 	terrainShader = std::make_unique<Shader>();
 	terrainShader->createShaderFromFile(vShader, fShader);
@@ -135,7 +135,7 @@ void Terrain::draw(glm::mat4 model, glm::vec3 position, GLuint uniformModel) {
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(position));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-	terrainMat->useTexture();
+	//terrainMat->useTexture();
 	terrainRenderer->drawElements(terrainVAO, terrainIBO);
 
 	/*

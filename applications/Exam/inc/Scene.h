@@ -14,6 +14,8 @@
 #include "Terrain.h"
 #include "Skybox.h"
 #include "Camera.h"
+#include "ImportModel.h"
+#include "InstancedModel.h"
 
 #include "Material.h"
 #include "Renderer.h"
@@ -31,10 +33,13 @@ private:
 	GLfloat now;
 
 	std::unique_ptr<Terrain> terrain;
+	std::unique_ptr<ImportModel> import_trees;
+	std::shared_ptr<InstancedModel> trees;
 
 	std::shared_ptr<Renderer> renderer;
 
 	std::shared_ptr<Shader> shader;
+	std::shared_ptr<Shader> instanceShader;
 	std::shared_ptr<Shader> shadow;
 	std::shared_ptr<Shader> dir_shadowmap;
 
