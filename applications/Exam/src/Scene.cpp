@@ -9,8 +9,8 @@ Scene::Scene()
 	time(0), now(0), model(1.0f), lowerLight(0), uniformModel(0),
 	uniformProjection(0), uniformView(0) {
 
-	start_pos = glm::vec3(0.0f, 10.0f, 0.0f);
-	terrain_pos = glm::vec3(0.0f, 0.0f, 0.0f);
+	start_pos = glm::vec3(500.0f, 100.0f, 500.0f);
+	terrain_pos = glm::vec3(0.0f, -100.0f, -0.0f);
 	model_pos = glm::vec3(10.0f, 0.5f, 35.0f);
 }
 
@@ -44,9 +44,9 @@ void Scene::generateLights() {
 	/* --- The Directional Lights in the scene --- */
 
 	mapLight = std::make_shared<DirectionalLight>(
-		1.0f, 1.0f, 1.0f,	 // Color
-		0.2f, 0.5f,			 // Ambient, diffuse 
-		5.0f, -15.0f, 6.0f); // Direction
+		1.f, 1.f, 1.f,					// Color
+		0.08f, 1.2f,					// Ambient, diffuse
+		-2000.0f, -6400.0f, 200.0f);	// Direction
 }
 
 /**
@@ -70,7 +70,7 @@ void Scene::generateScene(std::shared_ptr<Window>& mainWindow) {
 
 	terrain = std::make_unique<Terrain>();
 	camera = std::make_shared<Camera>(start_pos, glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f, 100.0f, 0.07f);
-	projection = glm::perspective(glm::radians(45.0f), ((GLfloat)mainWindow->getBufferWidth() / mainWindow->getBufferHeight()), 0.1f, 1200.0f);
+	projection = glm::perspective(glm::radians(45.0f), ((GLfloat)mainWindow->getBufferWidth() / mainWindow->getBufferHeight()), 0.1f, 2000.0f);
 }
 
 /**
@@ -131,5 +131,5 @@ void Scene::updateScene(std::shared_ptr<Window>& mainWindow) {
 
 	terrain->draw(model, terrain_pos, uniformModel);
 
-	//skybox->drawSkyBox(skyboxViewMatrix, projection, camera);
+	skybox->drawSkyBox(skyboxViewMatrix, projection, camera);
 }

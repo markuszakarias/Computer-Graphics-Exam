@@ -41,7 +41,6 @@ void Terrain::loadTerrainFromMap(const std::string filename) {
 
 	stbi_image_free(map);
 
-
 	for (int z = 0; z < heightMap.size(); z++) {
 		for (int x = 0; x < heightMap[0].size(); x++) {
 
@@ -76,7 +75,7 @@ void Terrain::loadTerrainFromMap(const std::string filename) {
 			std::vector <GLfloat> tempVertex = {
 				xCoord, yCoord, zCoord,
 				UV1, UV2,
-				0.f, -1.f, 0.f 
+				xCoord, -yCoord, zCoord 
 			};
 
 			vertices.insert(end(vertices), tempVertex.begin(), tempVertex.end());
@@ -98,7 +97,7 @@ void Terrain::loadTerrainFromMap(const std::string filename) {
 		}
 	}
 
-	terrainShader->calculateAverageNormals(indices, indices.size(), vertices, vertices.size(), 8, 5);
+	//terrainShader->calculateAverageNormals(indices, indices.size(), vertices, vertices.size(), 8, 5);
 	
 	terrainVAO = std::make_shared<VertexArray>();
 	terrainVAO->bind();
@@ -116,8 +115,18 @@ void Terrain::loadTerrainFromMap(const std::string filename) {
 	terrainIBO = std::make_shared<IndexBuffer>(indices.data(), indices.size());
 
 	terrainMat = std::make_unique<Material>();
-	terrainMat->getTexture("assets/textures/grass.jpg");
+	terrainMat->getTexture("assets/textures/mountain.png");
 	terrainMat->loadTexture();
+
+}
+
+void Terrain::generateShader() {
+
+	static const char* vShader = "assets/shaders/terrain.vert";
+	static const char* fShader = "assets/shaders/terrain.frag";
+
+	terrainShader = std::make_unique<Shader>();
+	terrainShader->createShaderFromFile(vShader, fShader);
 
 }
 

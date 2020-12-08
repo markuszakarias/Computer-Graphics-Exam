@@ -4,6 +4,7 @@ in vec4 vCol;
 in vec2 TexCoord;
 in vec3 Normal;
 in vec3 FragPos;
+in float Height;
 
 out vec4 colour;
 
@@ -74,7 +75,7 @@ vec4 CalcLightByDirection(Light light, vec3 direction)
 	vec4 diffuseColour = vec4(light.colour * light.diffuseIntensity * diffuseFactor, 1.0f);
 
 	// Set to zero, like we have no specular color
-	vec4 specularColour = vec4(0, 0, 0, 0); 
+	vec4 specularColour = vec4(0.0, 0.0, 0.0, 0.0); 
 	
 	if(diffuseFactor > 0.0f)
 	{
@@ -175,12 +176,37 @@ vec4 CalcSpotLights()
 	
 	return totalColour;
 }
+
+vec3 CalcHeightColour() {
+
+	vec3 terrainColours[4];
+
+	terrainColours[0] = vec3(0.08f, 0.11f, 0.24f);
+	terrainColours[1] = vec3(0.6f, 0.74f, 0.33f);
+	terrainColours[2] = vec3(0.53f, 0.55f, 0.55f);
+	terrainColours[3] = vec3(1.f, 0.98f, 0.98f);
+
+	if (Height <= 20.0) {
+		return terrainColours[0];
+	} else if (Height > 20.0 && Height <= 40.0) {
+		return terrainColours[1];
+	} else if (Height > 40.0 && Height <= 120.0) {
+		return terrainColours[2];
+	} else if (Height > 120.0) {
+		return terrainColours[3];
+	}
+
+	return vec3(.0f, .0f, .0f);
+}
+
 // Everything gets added together in main so we can output the final color. 
 void main()
 {
+	vec3 heightColour = CalcHeightColour();
 	vec4 finalColour = CalcDirectionalLight();
 	finalColour += CalcPointLights();
 	finalColour += CalcSpotLights();
 	
-	colour = texture(theTexture, TexCoord) * finalColour;
+	
+	colour = vec4(heightColour, 1.0f) * finalColour;
 }

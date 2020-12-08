@@ -37,6 +37,7 @@ public:
 	Terrain();
 	~Terrain();
 	void loadTerrainFromMap(const std::string filename);
+	void generateShader();
 	void draw(glm::mat4 model, glm::vec3 position, GLuint uniformModel);
 	
 };
