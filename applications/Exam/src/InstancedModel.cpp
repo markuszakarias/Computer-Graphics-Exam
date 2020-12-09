@@ -8,19 +8,11 @@ InstancedModel::~InstancedModel() {
 
 }
 
-InstancedModel::InstancedModel(std::shared_ptr<Window>& mainWindow) {
+InstancedModel::InstancedModel(std::shared_ptr<Window>& mainWindow, std::vector <glm::vec3> positions) {
 
-	int x = 0;
+	numInstanced = 200;
 
-	numInstanced = 5;
-
-	for (size_t i = 0; i < numInstanced; i++) {
-
-		glm::vec3 pos(500.0f + x, 100.0f, 500.0f);
-		instancedPositions.push_back(pos);
-		
-		x += 5;
-	}
+	instancedPositions = positions;
 
 	generateInstanced();
 }
@@ -32,11 +24,17 @@ void InstancedModel::generateInstanced() {
 
 	modelMatrices = new glm::mat4[numInstanced];
 
+	// Spacing in between models
+	unsigned int offset = 0;
+	unsigned int spacing = 200;
+
 	for (unsigned int i = 0; i < numInstanced; i++) {
 
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, instancedPositions[i]);
+		model = glm::translate(model, instancedPositions[i + offset]);
 		modelMatrices[i] = model;
+
+		offset += spacing;
 	}
 
 	instancedModelVAO = std::make_shared<VertexArray>();

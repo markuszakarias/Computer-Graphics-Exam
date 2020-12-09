@@ -31,6 +31,10 @@ void Terrain::loadTerrainFromMap(const std::string filename) {
 
 				heightMap[z][x] = static_cast<int>(map[num * numberOfChnls]);
 				num++;
+
+				if (heightMap[z][x] > 20 && heightMap[z][x] <= 30) {
+					treePositions.push_back(glm::vec3(x, heightMap[z][x] - 100.f, z));
+				}
 			}
 		}
 	}
@@ -147,6 +151,13 @@ float Terrain::getTileHeight(float objx, float objz) {
 	height = heightMap[floor(objz)][floor(objx)];
 
 	return height;
+}
+
+/**
+* @return treePositions - All possible positions for trees
+*/
+std::vector <glm::vec3> Terrain::getTreePositions() {
+	return treePositions;
 }
 
 /**

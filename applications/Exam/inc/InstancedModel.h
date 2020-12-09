@@ -41,7 +41,7 @@ public:
 	InstancedModel();
 	~InstancedModel();
 
-	InstancedModel(std::shared_ptr<Window>& mainWindow);
+	InstancedModel(std::shared_ptr<Window>& mainWindow, std::vector <glm::vec3> positions);
 
 	void generateInstanced();
 	void drawInstanced(std::shared_ptr<Camera>& camera, std::shared_ptr<Shader>& instanced_shader, glm::mat4 projection);

@@ -83,7 +83,7 @@ void Scene::generateScene(std::shared_ptr<Window>& mainWindow) {
 	skybox = std::make_shared<Skybox>(skyboxFaces);
 
 	terrain = std::make_unique<Terrain>();
-	trees = std::make_shared<InstancedModel>(mainWindow);
+	trees = std::make_shared<InstancedModel>(mainWindow, terrain->getTreePositions());
 
 	camera = std::make_shared<Camera>(start_pos, glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f, 100.0f, 0.07f);
 	projection = glm::perspective(glm::radians(45.0f), ((GLfloat)mainWindow->getBufferWidth() / mainWindow->getBufferHeight()), 0.1f, 2000.0f);

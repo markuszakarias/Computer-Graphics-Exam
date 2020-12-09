@@ -16,6 +16,7 @@ private:
 
 	int width, height;
 	std::vector <std::vector <int>> heightMap;
+	std::vector <glm::vec3> treePositions;
 
 	std::vector <GLfloat> vertices;
 	std::vector <GLuint> indices;
@@ -41,6 +42,7 @@ public:
 	void loadTerrainFromMap(const std::string filename);
 	void generateShader();
 	float getTileHeight(float objx, float objz);
+	std::vector <glm::vec3> getTreePositions();
 	void draw(glm::mat4 model, glm::vec3 position, GLuint uniformModel);
 	
 };
