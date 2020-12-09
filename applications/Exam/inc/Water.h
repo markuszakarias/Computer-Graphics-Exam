@@ -1,3 +1,5 @@
+#pragma once
+
 #include <memory>
 #include <glm/gtc/type_ptr.hpp>
 

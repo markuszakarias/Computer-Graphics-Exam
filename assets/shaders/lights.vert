@@ -22,10 +22,7 @@ void main()
 	
 	TexCoord = tex;
 	
-	// We are using this model matrix to account for any changes in rotation and scaling, making it a 
-	// 3x3 matrix because we dont want to take into account any transform since the normal is just a 
-	// direction and not an actual position, and we are using the transpose inverse here to invert the 
-	// scaling calculations on the model to account for non uniform scaling. 
+	// Calculating normals based on height
 	float hL = pos.y - 1.0;
 	float hR = pos.y + 1.0;
 	float hD = pos.y - 0.0;

@@ -54,10 +54,10 @@ void InstancedModel::generateInstanced() {
 void InstancedModel::drawInstanced(std::shared_ptr<Camera>& camera, std::shared_ptr<Shader>& instanced_shader, glm::mat4 projection) {
 
 	uniformView = instanced_shader->getViewLocation();
-	glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
+	glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera->calculateViewMatrix()));
 
 	uniformProjection = instanced_shader->getProjectionLocation();
-	glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera->calculateViewMatrix()));
+	glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 
 	instancedModel->renderInstanced(numInstanced);
 }

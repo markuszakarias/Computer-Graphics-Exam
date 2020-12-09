@@ -32,14 +32,18 @@ private:
 	GLfloat time;
 	GLfloat now;
 
+	GLfloat dt;
+	GLfloat interpolate;
+	GLfloat lightR, lightG, lightB;
+	GLfloat diffuse;
+	
 	std::unique_ptr<Terrain> terrain;
-	std::unique_ptr<ImportModel> import_trees;
 	std::shared_ptr<InstancedModel> trees;
 
 	std::shared_ptr<Renderer> renderer;
 
 	std::shared_ptr<Shader> shader;
-	std::shared_ptr<Shader> instanceShader;
+	std::shared_ptr<Shader> instancedShader;
 	std::shared_ptr<Shader> shadow;
 	std::shared_ptr<Shader> dir_shadowmap;
 
@@ -48,7 +52,8 @@ private:
 
 	std::shared_ptr<Camera> camera;
 	std::shared_ptr<Window> mainWindow;
-	std::shared_ptr<DirectionalLight> mapLight;
+
+	std::shared_ptr<DirectionalLight> dayLight;
 
 	SpotLight spotLights[3];
 
@@ -83,5 +88,6 @@ public:
 
 	void updateLights();
 	void updateTime();
+	void updateDayNightCycle();
 
 };

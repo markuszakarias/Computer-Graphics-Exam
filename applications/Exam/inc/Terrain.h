@@ -1,3 +1,5 @@
+#pragma once
+
 #include <memory>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -38,6 +40,7 @@ public:
 	~Terrain();
 	void loadTerrainFromMap(const std::string filename);
 	void generateShader();
+	float getTileHeight(float objx, float objz);
 	void draw(glm::mat4 model, glm::vec3 position, GLuint uniformModel);
 	
 };

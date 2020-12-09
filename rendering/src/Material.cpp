@@ -42,7 +42,7 @@ void Material::getTexture(const char* fileLoc) {
 
 bool Material::loadTexture() {
 
-	stbi_set_flip_vertically_on_load(1); // Comment this to not flip texture - will be beneficial most of the time
+	//stbi_set_flip_vertically_on_load(1); // Comment this to not flip texture - will be beneficial most of the time
 	unsigned char* texData = stbi_load(fileLocation, &width, &height, &bitDepth, 0);
 	if (!texData) {
 

@@ -130,6 +130,32 @@ void Terrain::generateShader() {
 
 }
 
+
+/**
+* Method for getting the height of the tile that the object is currently in,
+* later used for some very simple collition detection with terrain.
+* 
+* @param objx - Objects x position
+* @param objz - Objects z position
+* 
+* @return height - Height of the tile
+*/
+float Terrain::getTileHeight(float objx, float objz) {
+
+	float height;
+
+	height = heightMap[floor(objz)][floor(objx)];
+
+	return height;
+}
+
+/**
+* Drawing/rendering the terrain on screen.
+* 
+* @param model			- Model matrix
+* @param position		- Position of the object
+* @param uniformModel	- Location of uniform
+*/
 void Terrain::draw(glm::mat4 model, glm::vec3 position, GLuint uniformModel) {
 
 	model = glm::mat4(1.0f);

@@ -12,6 +12,13 @@ Scene::Scene()
 	start_pos = glm::vec3(500.0f, 100.0f, 500.0f);
 	terrain_pos = glm::vec3(0.0f, -100.0f, -0.0f);
 	model_pos = glm::vec3(500.0f, 100.0f, 500.0f);
+
+	// Initial light colour and diffuse
+	lightR = lightG = lightB = 1.f;
+	diffuse = 1.2f;
+	
+	// Variables for linear interpolation in day/night cycle
+	dt = interpolate = 0;
 }
 
 /**
@@ -35,10 +42,10 @@ void Scene::generateShaders() {
 	shader->createShaderFromFile(vShader, fShader);
 
 	static const char* instanced_vShader = "assets/shaders/instanced.vert";
-	static const char* instanced_fShader = "assets/shaders/lights.frag";
+	static const char* instanced_fShader = "assets/shaders/instanced.frag";
 
-	instanceShader = std::make_shared<Shader>();
-	instanceShader->createShaderFromFile(instanced_vShader, instanced_fShader);
+	instancedShader = std::make_shared<Shader>();
+	instancedShader->createShaderFromFile(instanced_vShader, instanced_fShader);
 }
 
 /**
@@ -49,10 +56,11 @@ void Scene::generateLights() {
 
 	/* --- The Directional Lights in the scene --- */
 
-	mapLight = std::make_shared<DirectionalLight>(
-		1.f, 1.f, 1.f,					// Color
-		0.08f, 1.2f,					// Ambient, diffuse
+	dayLight = std::make_shared<DirectionalLight>(
+		lightR, lightG, lightB,			// Color
+		0.08f, diffuse,					// Ambient, diffuse
 		-2000.0f, -6400.0f, 200.0f);	// Direction
+
 }
 
 /**
@@ -75,8 +83,6 @@ void Scene::generateScene(std::shared_ptr<Window>& mainWindow) {
 	skybox = std::make_shared<Skybox>(skyboxFaces);
 
 	terrain = std::make_unique<Terrain>();
-
-	import_trees = std::make_unique<ImportModel>(mainWindow);
 	trees = std::make_shared<InstancedModel>(mainWindow);
 
 	camera = std::make_shared<Camera>(start_pos, glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f, 100.0f, 0.07f);
@@ -91,12 +97,8 @@ void Scene::generateScene(std::shared_ptr<Window>& mainWindow) {
 */
 void Scene::updateLights() {
 
-	shader->setDirectionalLight(mapLight);
+	shader->setDirectionalLight(dayLight);
 
-	shader->setSpotLights(spotLights, 1);
-	lowerLight = camera->getCameraPosition();
-	lowerLight.y -= 0.1f; // Offsets the flashlight
-	spotLights[0].setFlash(lowerLight, camera->getCameraDirection());
 }
 
 /**
@@ -114,6 +116,38 @@ void Scene::updateTime() {
 }
 
 /**
+* Updates the directional light which is used as the sun in the scene
+* and setting the colour based on the time of scene.
+*/
+void Scene::updateDayNightCycle() {
+
+	std::cout << time << std::endl;
+
+	lightR = (1 - interpolate) * 1.f + interpolate * 0.36f;
+	lightG = (1 - interpolate) * 1.f + interpolate * 0.46f;
+	lightB = (1 - interpolate) * 1.f + interpolate * 0.5f;
+	diffuse = (1 - interpolate) * 1.2f + interpolate * 0.8f;
+
+	if (interpolate <= 0) {
+		dt = 1.0f / 1200;
+	}
+	
+	if (interpolate >= 1) {
+		dt = -1.0f / 1200;
+	}
+	
+	interpolate += dt;
+
+	dayLight = std::make_shared<DirectionalLight>(
+		lightR, lightG, lightB,			// Color
+		0.08f, diffuse,					// Ambient, diffuse
+		-2000.0f, -6400.0f, 200.0f);	// Direction
+
+	shader->setDirectionalLight(dayLight);
+
+}
+
+/**
 *   Updating the game as long as the window is open.
 *	Function handles all event updating.
 *
@@ -128,8 +162,10 @@ void Scene::updateScene(std::shared_ptr<Window>& mainWindow) {
 	updateTime();
 	camera->keyControls(mainWindow->retrieveKeys(), deltaTime);
 	camera->mouseControl(mainWindow->getChangeX(), mainWindow->getChangeY());
+	
 
 	shader->useShader();
+	updateDayNightCycle();
 	uniformModel = shader->getModelLocation();
 	uniformProjection = shader->getProjectionLocation();
 	uniformView = shader->getViewLocation();
@@ -137,12 +173,11 @@ void Scene::updateScene(std::shared_ptr<Window>& mainWindow) {
 	glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 	glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera->calculateViewMatrix()));
 
-	shader->setDirectionalLight(mapLight);
-
 	terrain->draw(model, terrain_pos, uniformModel);
-	
-	import_trees->drawModel(model, model_pos, uniformModel);
-
-
 	skybox->drawSkyBox(skyboxViewMatrix, projection, camera);
+
+	instancedShader->useShader();
+	updateDayNightCycle();
+	trees->drawInstanced(camera, instancedShader, projection);
+	
 }
