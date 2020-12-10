@@ -21,16 +21,14 @@ private:
 	std::vector <GLfloat> vertices;
 	std::vector <GLuint> indices;
 
-	std::shared_ptr<VertexArray>		terrainVAO;
-	std::unique_ptr<VertexBuffer>		terrainVBO;
-	std::unique_ptr<VertexBufferLayout> terrainVBLayout;
-	std::shared_ptr<IndexBuffer>		terrainIBO;
+	std::shared_ptr<VertexArray>			terrainVAO;
+	std::unique_ptr<VertexBuffer>			terrainVBO;
+	std::unique_ptr<VertexBufferLayout>		terrainVBLayout;
+	std::shared_ptr<IndexBuffer>			terrainIBO;
 
-	std::unique_ptr<Shader>				terrainShader;
-	std::unique_ptr<Material>			terrainMat;
-	std::unique_ptr<Renderer>			terrainRenderer;
-
-	std::unique_ptr<Model>				importModel;
+	std::unique_ptr<Shader>					terrainShader;
+	std::unique_ptr<Material>				terrainMat;
+	std::unique_ptr<Renderer>				terrainRenderer;
 
 	GLuint uniformView;
 	GLuint uniformProjection;

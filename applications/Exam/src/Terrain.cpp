@@ -126,8 +126,8 @@ void Terrain::loadTerrainFromMap(const std::string filename) {
 
 void Terrain::generateShader() {
 
-	static const char* vShader = "assets/shaders/lights.vert";
-	static const char* fShader = "assets/shaders/lights.frag";
+	static const char* vShader = "assets/shaders/terrain.vert";
+	static const char* fShader = "assets/shaders/terrain.frag";
 
 	terrainShader = std::make_unique<Shader>();
 	terrainShader->createShaderFromFile(vShader, fShader);
@@ -172,13 +172,10 @@ void Terrain::draw(glm::mat4 model, glm::vec3 position, GLuint uniformModel) {
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(position));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-	//terrainMat->useTexture();
 	terrainRenderer->drawElements(terrainVAO, terrainIBO);
 
-	/*
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(10.0f, 0.5f, 25.0f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-	importModel->renderElements();
-	*/
+
 }

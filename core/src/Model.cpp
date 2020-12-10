@@ -109,7 +109,7 @@ void Model::loadMaterials(const aiScene* scene) {
 
 			textureList[i] = std::make_unique<Material>();
 			textureList[i]->getTexture("assets/textures/plain.png"); // In case no texture is found
-			textureList[i]->loadTextureA();				// we set a standard texture.
+			textureList[i]->loadTextureA();							 // We set a standard texture.
 		}
 	}
 }

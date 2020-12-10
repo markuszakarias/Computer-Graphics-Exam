@@ -29,13 +29,18 @@ private:
 	glm::mat4 model;
 	glm::vec3 position;
 
+	std::vector <glm::vec3> velocities;
+
 public:
 	ImportModel();
 	~ImportModel();
 
-	ImportModel(std::shared_ptr<Window>& mainWindow);
+	ImportModel(std::shared_ptr<Window>& mainWindow, glm::vec3 pos);
 
 	void generateModel();
-	void drawModel(glm::mat4 model, glm::vec3 position, GLuint uniformModel);
+
+	void updateMovement(GLfloat dt);
+
+	void drawModel(glm::mat4 model, GLuint uniformModel);
 
 };

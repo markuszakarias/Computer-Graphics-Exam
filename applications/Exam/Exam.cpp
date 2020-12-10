@@ -8,7 +8,7 @@
 */
 int main() {
 
-	auto mainWindow = std::make_shared<Window>(1200, 800);
+	auto mainWindow = std::make_shared<Window>(1400, 1000);
 	mainWindow->initialise();
 
 	auto terrainScene = std::make_unique<Scene>();
